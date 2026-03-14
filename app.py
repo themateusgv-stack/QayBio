@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-TELEFONO_CONTACTO = "51900000000"
+TELEFONO_CONTACTO = "928315704"
 
 PRODUCTOS = [
     {

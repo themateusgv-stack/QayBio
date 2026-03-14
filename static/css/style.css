@@ -1,5 +1,5 @@
 :root { --naranja: #ff5000;
---gris: #f4f4f4; --texto: #333; }
+--gris: #a8e0b1; --texto: #333; }
 body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--gris); color: var(--texto)}
 
 /* Navbar */
