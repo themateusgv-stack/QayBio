@@ -8,13 +8,17 @@
 </head>
 <body>
     <nav>
-        <a href="/" class="logo-container">
+        <a href="/index_principal" class="logo-container">
             <img src="{{ url_for('static', filename='imagenes/logo.jpg') }}" alt="Logo QayBio" class="logo-img">
         </a>
         <form class="search-bar" action="/">
             <input type="text" name="q" placeholder="Buscar productos..." required>
             <button type="submit">🔍</button>
         </form>
+        </div> style="display: flex; gap: 10px;">
+            <a href="/registro" style="text-decoration: none; color: var(--naranja); font-weight: bold;">Registrarse</a>
+
+        </div>
     </nav>
 
     <div class="banner-container">

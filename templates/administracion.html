@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="padding: 20px; overflow-x: auto;">
+    <h1 style="text-align: center;">Panel de control</h1>
+    <table style="width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background: #333; color: white; text-align: left;">
+                <th style="padding: 15px;">Teléfono</th>
+                <th>Nombre</th>
+                <th>Cant. Solicitada</th>
+                <th>Producto</th>
+                <th>Entrega</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <form method="POST">
+                    <input type="hidden" name="id" value="{{ r.id }}">
+                    <td style="padding: 10px;">{{ r.telefono }}</td>
+                    <td>{{ r.nombre }}</td>
+                    <td><input type="text" name="cantidad" value="{{ r.cantidad}}" style="width: 50px;"></td>
+                    <td>
+                        <select name="producto_ref">
+                            <option value="{{ r.producto_ref}}">{{ r.producto_ref }}</option>
+                            {% for p in productos %}
+                            <option value="{{ p.nombre }}">{{ p.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="estado_pago">
+                            <option value="Pagado" {% if r.estado_pago == 'Pagado' %}selected{% endif %}>Pagado</option>
+                            <option value="Deuda" {% if r.estado_pago == 'Deuda' %}selected{% endif %}>Deuda</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="estado_entrega">
+                            <option value="Entregado" {% if r.estado_entrega == 'Entregado' %}selected{% endif %}>Entregado</option>
+                            <option value="Pendiente" {% if r.estado_entrega == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="cancelado" {% if r.estado_entrega == 'cancelado' %}selected{% endif %}>Cancelado</option>
+                        </select>
+                    </td>
+                    <td><button type="submit" style="background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Guardar</button></td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
