@@ -1,29 +1,10 @@
-from flask import Flask, render_template, request,redirect, uri_for 
-from flask_sqlalchemy import SQLAlchemy 
-import os
+from flask import Flask, render_template, request,redirect
 import requests
 
 app = Flask(__name__)
 URL_WEBHOOK_DISCORD = "https://discord.com/api/webhooks/1523337443452129383/DQ8-4oSPzsjEeGAz8aee1_JtR8x0eXvMp26rB4l4fhxO4L8ERd0mzfGZn9NYUi12-Xt6"
 
-basedir = os.path.abspath(os.paht.dirname(__file__))
-app.config['SQLALCHEMY_DATARSE_URI'] = 'sqlite:///' + os.path.join(basedir, 'tienda.db')
-app.config['SQLALCHEMY_TRAK_MODIFICATIONS'] = False
-db =SQLAlchemy(app)
-
 TELEFONO_CONTACTO = "928315704"
-
-class Registro(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    telefono =db.Column(db.String(20), nullable=False)
-    nombre =db.Column(db.String(50), nullable=False)
-    cantidad = db.Colum(db.String(50), default="0")
-    producto_ref = db.Column(db.String(100), default="-")
-    estado_pago = db.Column(db.String(50, default="Deuda"))
-    estado_entraga = db.Column(db.String(50), default="Pendiente")
-
-with app.app_contex():
-    db.create_all()
 
 PRODUCTOS = [
     {
@@ -100,37 +81,6 @@ PRODUCTOS = [
         "descripcion": "H2O enriquecido de oxígeno Purificador de agua natural Alcaliniza el PH del organismo, proporciona mayor oxígeno, elimina patógenos como hongos, virus, parásitos y bacterias. Eficaz para diferentes padecimientos como el cáncer, pie diabético, diabetes, miomas, quistes, tumores, entre otros."
     },
 ]
-
-@app.route('/index_principal')
-def index_principal():
-    return render_template('index_principal.html')
-
-@app.route('/registro_usuario', methods=['GET', 'POST'])
-def registro_usuario():
-    if request.method == 'POST': 
-        nom = request.form.get('nombre')
-        tel = request.form.get('telefono')
-        nuevo = Registro(nombre = nom, telefono = tel)
-        db.session.add(nuevo)
-        db.session.commit()
-        return redirect(url_for('home'))
-    return render_template('registro.html')
-
-@app.route('/administracion', methods=['GET', 'POST'])
-def administracion():
-    if request.method == 'POST':
-        reg_id = request.form.get('id')
-        registro = Registro.query.get(reg_id)
-        registro.cantidad = request.form.get('cantidad')
-        registro.producto_ref = request.form.get('producto_ref')
-        registro.estado_pago = request.form.get('estado_pago')
-        registro.estado_entrega = request.form.get('estado_entrega')
-        db.session.commit()
-        return redirect(url_for('administracion'))
-    
-    registros = Registro.query.all()
-    return render_template('administracion.html', registros=registros, productos=PRODUCTOS)
-
 
 @app.route('/')
 
