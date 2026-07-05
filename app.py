@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request,redirect, uri_for 
 from flask_sqlalchemy import SQLAlchemy 
 import os
+import requests
 
 app = Flask(__name__)
+URL_WEBHOOK_DISCORD = "https://discord.com/api/webhooks/1523337443452129383/DQ8-4oSPzsjEeGAz8aee1_JtR8x0eXvMp26rB4l4fhxO4L8ERd0mzfGZn9NYUi12-Xt6"
 
 basedir = os.path.abspath(os.paht.dirname(__file__))
 app.config['SQLALCHEMY_DATARSE_URI'] = 'sqlite:///' + os.path.join(basedir, 'tienda.db')
@@ -146,6 +148,23 @@ def producto(id):
     if p:
         return render_template('producto.html', producto = p, Whatsapp = TELEFONO_CONTACTO)
     return "Producto no encontrado", 404
+
+@app.route('/click')
+def registrar_clic():
+    user_id = request.args.get('user_id')
+
+    if user_id:
+        try:
+            data = {
+                "content": f"SISTEMA_MONEDAS_RECOMPENSA:{user_id}"
+            }
+            requests.post(URL_WEBHOOK_DISCORD, json=data)
+            
+            return redirect("/?status=success")
+        except Exception as e:
+            print(f"Error enviando webhook: {e}")
+
+    return redirect("/")
 
 if __name__ == '__main__':
     app.run(debug=True)
